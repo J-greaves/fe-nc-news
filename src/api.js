@@ -15,3 +15,10 @@ export const getUsers = () => {
     return data;
   });
 };
+
+export const getArticleById = (articleId) => {
+  return ncNews.get(`/articles/${articleId}`).then(({ data }) => {
+    console.log(data);
+    return data;
+  });
+};

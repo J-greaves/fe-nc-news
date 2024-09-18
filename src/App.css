@@ -26,12 +26,25 @@ header {
   left: 0;
   width: 100%;
   height: 160px;
-  padding: 0 20px;
+  padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
 }
 
 /* Logo Styling */
+.logo-set {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: black solid 5px;
+  padding-left: 100px;
+  padding-right: 100px;
+  border-radius: 20%;
+  height: 100%;
+  border-top: 0;
+  border-bottom: 0;
+}
+
 .logo {
   transition: filter 300ms;
   height: 9vw;
@@ -41,7 +54,7 @@ header {
   width: auto;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #000000aa);
+  filter: drop-shadow(0 0 2em #160094aa);
   cursor: pointer;
 }
 
@@ -58,7 +71,7 @@ header {
 .searchbar {
   position: absolute;
   bottom: -40px;
-  width: 60%;
+  width: 40%;
   padding: 10px;
   color: #000;
   font-size: large;

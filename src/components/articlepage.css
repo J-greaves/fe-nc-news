@@ -1,0 +1,142 @@
+.flexbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.flexbox-row {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-image {
+  margin-top: 25px;
+  margin-right: 25px;
+  width: 50%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.article-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.article-body {
+  margin: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.article-title {
+  font-size: 2rem;
+  padding-left: 25px;
+  background-color: rgb(226, 226, 226);
+  border-radius: 15px;
+  border: rgba(194, 194, 194, 0.603) solid 6px;
+}
+
+.details-likes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.details-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.article-detail {
+  font-size: 1.5rem;
+  text-align: left;
+  padding-left: 25px;
+  margin-bottom: 10px;
+  background-color: rgb(226, 226, 226);
+  border-radius: 15px;
+  border: rgba(194, 194, 194, 0.603) solid 6px;
+  font-weight: bold;
+}
+
+.article-detail-likes {
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 1rem;
+  background-color: rgb(226, 226, 226);
+  border-radius: 15px;
+  border: rgba(194, 194, 194, 0.603) solid 6px;
+}
+
+.article-likes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.article-likes img {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+  margin: -20px;
+  padding: 0;
+}
+
+.article-likes h2 {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .flexbox-row {
+    flex-direction: column;
+  }
+  .details-likes {
+    flex-direction: column;
+  }
+
+  .article-title {
+    font-size: 1.5rem;
+  }
+
+  .article-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .article-detail {
+    font-size: 1rem;
+  }
+
+  .article-body {
+    font-size: 1.25rem;
+    text-align: center;
+    margin: 0rem;
+  }
+
+  .article-detail-likes {
+    font-size: 1rem;
+  }
+
+  .article-likes img {
+    width: 50px;
+    height: 50px;
+  }
+}

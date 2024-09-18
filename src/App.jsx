@@ -3,6 +3,7 @@ import { Header } from "./components/Header";
 import { BurgerMenu } from "./components/BurgerMenu";
 import { Home } from "./components/Home";
 import "./App.css";
+import { ArticlePage } from "./components/ArticlePage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/:articleId" element={<ArticlePage />} />
       </Routes>
     </div>
   );

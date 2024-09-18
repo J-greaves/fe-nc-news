@@ -1,6 +1,6 @@
 /* Button to open the burger menu */
 .bm-burger-button {
-  position: absolute;
+  position: fixed;
   width: 5vw;
   height: 7vh;
   min-width: 42px;

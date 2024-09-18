@@ -1,12 +1,22 @@
+import { Link } from "react-router-dom";
+
 export const Header = () => {
   return (
     <header className="header">
-      <img
-        className="globeLogo"
-        src="src/assets/logo.png"
-        alt="NC News globe logo"
-      />
-      <img className="logo" src="src/assets/NC.svg" alt="NC News logo text" />
+      <Link to="/">
+        <div className="logo-set">
+          <img
+            className="logo globeLogo"
+            src="src/assets/logo.png"
+            alt="NC News globe logo"
+          />
+          <img
+            className="logo"
+            src="src/assets/NC.svg"
+            alt="NC News logo text"
+          />
+        </div>
+      </Link>
       <input className="searchbar" type="text" placeholder="Search.."></input>
       <img
         src="src/assets/unknownUser.png"
