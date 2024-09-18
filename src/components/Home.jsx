@@ -8,10 +8,12 @@ import "../App.css";
 export const Home = () => {
   const [articles, setArticles] = useState([]);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getArticles().then(({ articles }) => {
       setArticles(articles);
+      setLoading(false);
     });
   }, []);
 
@@ -22,6 +24,10 @@ export const Home = () => {
       setUsers(users);
     });
   }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Container

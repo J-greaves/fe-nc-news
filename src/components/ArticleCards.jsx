@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -17,8 +18,6 @@ export const ArticleCards = ({ article, users }) => {
     }
   });
 
-  console.log(article);
-
   return (
     <Card
       sx={{
@@ -34,15 +33,27 @@ export const ArticleCards = ({ article, users }) => {
       }}
     >
       {/* Thumbnail */}
-      <CardMedia
-        component="img"
-        sx={{
+      <Link
+        to={`/${article.article_id}`}
+        style={{
+          textDecoration: "none",
+          display: "block",
           width: { sm: "50%", xs: "100%" },
-          height: { xs: 200, sm: "auto" },
         }}
-        image={article.article_img_url}
-        alt={article.title}
-      />
+      >
+        <CardMedia
+          component="img"
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+          image={article.article_img_url}
+          alt={article.title}
+        />
+      </Link>
+
+      {/* Content */}
       <Box
         sx={{
           display: "flex",
@@ -89,16 +100,18 @@ export const ArticleCards = ({ article, users }) => {
               width: "100%",
             }}
           >
-            <Avatar
-              alt={article.author}
-              src={articleAuthorImg}
-              sx={{
-                width: 96,
-                height: 96,
-                border: "black solid 2px",
-                boxShadow: "0 0 10px rgba(0, 0, 0, 0.8)",
-              }}
-            />
+            <Link to={`/${article.id}`}>
+              <Avatar
+                alt={article.author}
+                src={articleAuthorImg}
+                sx={{
+                  width: 96,
+                  height: 96,
+                  border: "black solid 2px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.8)",
+                }}
+              />
+            </Link>
             <Box sx={{ ml: 2 }}>
               <Typography variant="caption" color="text.secondary">
                 Submitted by:
