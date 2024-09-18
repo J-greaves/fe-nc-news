@@ -12,6 +12,7 @@ export const Home = () => {
 
   useEffect(() => {
     getArticles().then(({ articles }) => {
+      console.log(articles);
       setArticles(articles);
       setLoading(false);
     });
@@ -26,7 +27,7 @@ export const Home = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="loading-info">Loading...</p>;
   }
 
   return (
