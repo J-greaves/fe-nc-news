@@ -5,14 +5,13 @@ import { getArticles } from "../api";
 import { getUsers } from "../api";
 import "../App.css";
 
-export const Home = () => {
+export const Home = ({ votes, setVotes }) => {
   const [articles, setArticles] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getArticles().then(({ articles }) => {
-      console.log(articles);
       setArticles(articles);
       setLoading(false);
     });
@@ -20,8 +19,6 @@ export const Home = () => {
 
   useEffect(() => {
     getUsers().then(({ users }) => {
-      console.log(users);
-
       setUsers(users);
     });
   }, []);
@@ -50,7 +47,12 @@ export const Home = () => {
       >
         {articles.map((article, index) => (
           <Grid2 item xs={12} key={index} sx={{ width: "100%" }}>
-            <ArticleCards article={article} users={users} />
+            <ArticleCards
+              article={article}
+              users={users}
+              votes={votes}
+              setVotes={setVotes}
+            />
           </Grid2>
         ))}
       </Grid2>
