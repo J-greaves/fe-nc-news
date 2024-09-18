@@ -104,6 +104,13 @@
   margin-bottom: 0;
 }
 
+.loading-info {
+  color: black;
+  font-size: xx-large;
+  text-align: center;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 768px) {
   .flexbox-row {
     flex-direction: column;

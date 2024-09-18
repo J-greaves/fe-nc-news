@@ -1,31 +1,54 @@
 import { useParams } from "react-router-dom";
-import { getArticleById } from "../api";
+import { getArticles } from "../api";
 import { useState, useEffect } from "react";
+import { CommentCards } from "./CommentCards";
+import { Grid2, Container } from "@mui/material";
 import "./articlepage.css";
+import { getUsers } from "../api";
+
 export const ArticlePage = () => {
   const { articleId } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [comments, setComments] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    getArticleById(articleId)
+    getArticles(articleId)
       .then(({ article }) => {
-        console.log(article);
         setArticle(article);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching article:", error);
         setLoading(false);
+        return <p className="loading-info">{error}</p>;
       });
   }, [articleId]);
 
+  useEffect(() => {
+    getArticles(articleId, "getComments")
+      .then(({ comments }) => {
+        setComments(comments);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        return <p className="loading-info">{error}</p>;
+      });
+  }, [articleId]);
+
+  useEffect(() => {
+    getUsers().then(({ users }) => {
+      setUsers(users);
+    });
+  }, []);
+
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="loading-info">Loading...</p>;
   }
 
   if (!article) {
-    return <p>Article not found!</p>;
+    return <p className="loading-info">Article not found!</p>;
   }
 
   return (
@@ -55,6 +78,34 @@ export const ArticlePage = () => {
       <section className="article-body">
         <p>{article.body}</p>
       </section>
+      <Container
+        maxWidth="md"
+        sx={{
+          marginTop: "50px",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          padding: "0 !important",
+        }}
+      >
+        <h2
+          style={{ textAlign: "center", width: "100%", fontSize: "xx-large" }}
+        >
+          Comments:
+        </h2>
+        <Grid2
+          container
+          spacing={2}
+          justifyContent="center"
+          sx={{ width: "100%", margin: 0 }}
+        >
+          {comments.map((comment, index) => (
+            <Grid2 item xs={12} key={index} sx={{ width: "100%" }}>
+              <CommentCards comment={comment} users={users} />
+            </Grid2>
+          ))}
+        </Grid2>
+      </Container>
     </article>
   );
 };

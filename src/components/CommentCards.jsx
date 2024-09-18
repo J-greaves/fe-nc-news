@@ -9,12 +9,12 @@ import {
   Box,
 } from "@mui/material";
 
-export const ArticleCards = ({ article, users }) => {
-  let articleAuthorImg = null;
-  article;
+export const CommentCards = ({ comment, users }) => {
+  let commentAuthorImg = null;
+
   users.forEach((user) => {
-    if (article.author === user.username) {
-      articleAuthorImg = user.avatar_url;
+    if (comment.author === user.username) {
+      commentAuthorImg = user.avatar_url;
     }
   });
 
@@ -32,27 +32,6 @@ export const ArticleCards = ({ article, users }) => {
         },
       }}
     >
-      {/* Thumbnail */}
-      <Link
-        to={`/${article.article_id}`}
-        style={{
-          textDecoration: "none",
-          display: "block",
-          width: { sm: "50%", xs: "100%" },
-        }}
-      >
-        <CardMedia
-          component="img"
-          sx={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-          image={article.article_img_url}
-          alt={article.title}
-        />
-      </Link>
-
       {/* Content */}
       <Box
         sx={{
@@ -70,24 +49,24 @@ export const ArticleCards = ({ article, users }) => {
             component="div"
             gutterBottom
             sx={{
-              fontSize: "30px",
+              fontSize: "25px",
               fontWeight: "bolder",
               flexGrow: 1,
               padding: "1rem",
             }}
           >
-            {article.title.length > 50
-              ? article.title.slice(0, 50) + "..."
-              : article.title}
+            {comment.author +
+              " @ " +
+              new Date(comment.created_at).toDateString()}
           </Typography>
 
           {/* Description */}
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{ width: "100%" }}
+            sx={{ width: "100vw%", marginRight: "1rem" }}
           >
-            {article.description}
+            {comment.body}
           </Typography>
 
           {/* Author and Date */}
@@ -100,10 +79,10 @@ export const ArticleCards = ({ article, users }) => {
               width: "100%",
             }}
           >
-            <Link to={`/${article.id}`}>
+            <Link to={`/${comment.article_id}`}>
               <Avatar
-                alt={article.author}
-                src={articleAuthorImg}
+                alt="Comment author avatar image"
+                src={commentAuthorImg}
                 sx={{
                   width: 96,
                   height: 96,
@@ -120,10 +99,10 @@ export const ArticleCards = ({ article, users }) => {
                 variant="subtitle2"
                 sx={{ fontSize: "large", color: "black" }}
               >
-                {article.author}
+                {comment.author}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {new Date(article.created_at).toDateString()}
+                {new Date(comment.created_at).toDateString()}
               </Typography>
             </Box>
 
@@ -142,7 +121,7 @@ export const ArticleCards = ({ article, users }) => {
                 style={{ width: 50, height: 50 }}
               />
               <Typography variant="subtitle2">
-                Likes: {article.votes}
+                Likes: {comment.votes}
               </Typography>
             </Box>
           </Box>

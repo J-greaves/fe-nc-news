@@ -4,21 +4,21 @@ const ncNews = axios.create({
   baseURL: "https://nc-news-api-jg.onrender.com/api",
 });
 
-export const getArticles = () => {
-  return ncNews.get("/articles").then(({ data }) => {
+export const getArticles = (articleId, getComments) => {
+  let route = `/articles`;
+  if (articleId) {
+    route += `/${articleId}`;
+  }
+  if (getComments) {
+    route += `/comments`;
+  }
+  return ncNews.get(route).then(({ data }) => {
     return data;
   });
 };
 
 export const getUsers = () => {
   return ncNews.get("/users").then(({ data }) => {
-    return data;
-  });
-};
-
-export const getArticleById = (articleId) => {
-  return ncNews.get(`/articles/${articleId}`).then(({ data }) => {
-    console.log(data);
     return data;
   });
 };
