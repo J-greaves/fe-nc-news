@@ -22,3 +22,9 @@ export const getUsers = () => {
     return data;
   });
 };
+
+export const patchArticleVotes = (articleId, vote_inc) => {
+  return ncNews.patch(`/articles/${articleId}`, vote_inc).then(({ data }) => {
+    return data;
+  });
+};

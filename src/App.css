@@ -54,7 +54,7 @@ header {
   width: auto;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #160094aa);
+  filter: drop-shadow(0 0 1rem #160094aa);
   cursor: pointer;
 }
 
@@ -114,4 +114,27 @@ h2 {
   text-align: center;
   color: #000;
   font-size: 50px;
+}
+
+.like-button {
+  transition: filter 200ms;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.384);
+  height: 50px;
+  width: auto;
+}
+
+.like-button:hover {
+  border-color: transparent;
+  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.466);
+  filter: drop-shadow(0 0 0.65rem #990000af);
+  cursor: pointer;
+}
+
+.liked {
+  border-color: transparent;
+  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.466);
+  filter: drop-shadow(0 0 0.65rem #990000af);
+  cursor: pointer;
 }
