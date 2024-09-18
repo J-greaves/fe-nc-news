@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -8,15 +8,35 @@ import {
   Avatar,
   Box,
 } from "@mui/material";
+import { patchArticleVotes } from "../api";
 
 export const ArticleCards = ({ article, users }) => {
+  const [hasVoted, setHasVoted] = useState(false);
+  const [votes, setVotes] = useState(article.votes);
+
   let articleAuthorImg = null;
-  article;
   users.forEach((user) => {
     if (article.author === user.username) {
       articleAuthorImg = user.avatar_url;
     }
   });
+
+  function handleVote() {
+    const plus_vote = { inc_votes: 1 };
+    const minus_vote = { inc_votes: -1 };
+    const articleId = article.article_id;
+    if (hasVoted === false) {
+      patchArticleVotes(articleId, plus_vote).then(({ article }) => {
+        setHasVoted(true);
+        setVotes(article.votes);
+      });
+    } else {
+      patchArticleVotes(articleId, minus_vote).then(({ article }) => {
+        setHasVoted(false);
+        setVotes(article.votes);
+      });
+    }
+  }
 
   return (
     <Card
@@ -137,12 +157,20 @@ export const ArticleCards = ({ article, users }) => {
               }}
             >
               <img
+                onClick={handleVote}
+                className={hasVoted ? "like-button liked" : "like-button"}
                 src="src/assets/like.png"
-                alt="Like"
-                style={{ width: 50, height: 50 }}
+                alt="Like button, press to like article, press again to unlike"
               />
-              <Typography variant="subtitle2">
-                Likes: {article.votes}
+
+              <Typography
+                sx={{
+                  fontSize: "large",
+                  fontWeight: "550",
+                  color: "rgba(0, 0, 0, 0.6)",
+                }}
+              >
+                Likes: {votes}
               </Typography>
             </Box>
           </Box>

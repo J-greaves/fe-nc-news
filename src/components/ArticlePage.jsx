@@ -1,22 +1,41 @@
 import { useParams } from "react-router-dom";
-import { getArticles } from "../api";
+import { getArticles, getUsers, patchArticleVotes } from "../api";
 import { useState, useEffect } from "react";
 import { CommentCards } from "./CommentCards";
 import { Grid2, Container } from "@mui/material";
 import "./articlepage.css";
-import { getUsers } from "../api";
 
-export const ArticlePage = () => {
+export const ArticlePage = ({}) => {
   const { articleId } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [users, setUsers] = useState([]);
+  const [votes, setVotes] = useState(0);
+  const [hasVoted, setHasVoted] = useState(false);
+
+  function handleVote() {
+    const plus_vote = { inc_votes: 1 };
+    const minus_vote = { inc_votes: -1 };
+    const articleId = article.article_id;
+    if (hasVoted === false) {
+      patchArticleVotes(articleId, plus_vote).then(({ article }) => {
+        setHasVoted(true);
+        setVotes(article.votes);
+      });
+    } else {
+      patchArticleVotes(articleId, minus_vote).then(({ article }) => {
+        setHasVoted(false);
+        setVotes(article.votes);
+      });
+    }
+  }
 
   useEffect(() => {
     getArticles(articleId)
       .then(({ article }) => {
         setArticle(article);
+        setVotes(article.votes);
         setLoading(false);
       })
       .catch((error) => {
@@ -69,8 +88,13 @@ export const ArticlePage = () => {
               </h2>
             </div>
             <div className="article-likes">
-              <h2 className="article-detail-likes">Likes: {article.votes}</h2>
-              <img src="src/assets/like.png" />
+              <h2 className="article-detail-likes">Likes: {votes}</h2>
+              <img
+                onClick={handleVote}
+                className={hasVoted ? "like-button liked" : "like-button"}
+                src="src/assets/like.png"
+                alt="Like button, press to like article, press again to unlike"
+              />
             </div>
           </div>
         </div>
@@ -101,7 +125,12 @@ export const ArticlePage = () => {
         >
           {comments.map((comment, index) => (
             <Grid2 item xs={12} key={index} sx={{ width: "100%" }}>
-              <CommentCards comment={comment} users={users} />
+              <CommentCards
+                comment={comment}
+                users={users}
+                votes={votes}
+                setVotes={setVotes}
+              />
             </Grid2>
           ))}
         </Grid2>
