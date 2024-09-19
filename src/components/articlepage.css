@@ -147,3 +147,17 @@
     height: 50px;
   }
 }
+
+textarea {
+  width: 300px;
+  height: 150px;
+  background-color: white;
+  resize: none;
+  color: black;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

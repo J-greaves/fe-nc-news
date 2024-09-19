@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
 
 export const Header = () => {
+  const { loggedInUser } = useContext(UserContext);
+
   return (
     <header className="header">
       <Link to="/">
@@ -18,11 +22,17 @@ export const Header = () => {
         </div>
       </Link>
       <input className="searchbar" type="text" placeholder="Search.."></input>
-      <img
-        src="src/assets/unknownUser.png"
-        alt="Right Side Image"
-        className="userImg"
-      />
+      <Link to="/signin">
+        <img
+          src={
+            loggedInUser
+              ? loggedInUser.avatar_url
+              : "src/assets/unknownUser.png"
+          }
+          alt="Right Side Image"
+          className="userImg"
+        />
+      </Link>
     </header>
   );
 };
