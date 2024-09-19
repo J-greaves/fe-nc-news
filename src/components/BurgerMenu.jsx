@@ -7,9 +7,9 @@ export const BurgerMenu = () => {
   return (
     <Menu>
       <h2>
-        <a id="home" className="menu-item" to="/">
+        <Link id="home" className="menu-item" to="/">
           Topics
-        </a>
+        </Link>
       </h2>
 
       <Link className="menu-item" to="/">
@@ -25,9 +25,14 @@ export const BurgerMenu = () => {
         Football
       </Link>
       <h2>
-        <a id="home" className="menu-item" href="/">
+        <Link id="home" className="menu-item" to="/signin">
+          Users
+        </Link>
+      </h2>
+      <h2>
+        <Link id="home" className="menu-item" to="/">
           Home
-        </a>
+        </Link>
       </h2>
     </Menu>
   );

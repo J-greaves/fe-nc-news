@@ -5,22 +5,19 @@ import { getArticles } from "../api";
 import { getUsers } from "../api";
 import "../App.css";
 
-export const Home = ({ votes, setVotes }) => {
+export const Home = ({ votes, setVotes, users }) => {
   const [articles, setArticles] = useState([]);
-  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getArticles().then(({ articles }) => {
-      setArticles(articles);
-      setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
-    getUsers().then(({ users }) => {
-      setUsers(users);
-    });
+    getArticles()
+      .then(({ articles }) => {
+        setArticles(articles);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   if (loading) {

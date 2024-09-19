@@ -53,14 +53,7 @@ export const ArticleCards = ({ article, users }) => {
       }}
     >
       {/* Thumbnail */}
-      <Link
-        to={`/${article.article_id}`}
-        style={{
-          textDecoration: "none",
-          display: "block",
-          width: { sm: "50%", xs: "100%" },
-        }}
-      >
+      <Link to={`/${article.article_id}`}>
         <CardMedia
           component="img"
           sx={{
@@ -85,22 +78,24 @@ export const ArticleCards = ({ article, users }) => {
       >
         <CardContent sx={{ width: "100%" }}>
           {/* Title */}
-          <Typography
-            variant="h6"
-            component="div"
-            gutterBottom
-            sx={{
-              fontSize: "30px",
-              fontWeight: "bolder",
-              flexGrow: 1,
-              padding: "1rem",
-            }}
-          >
-            {article.title.length > 50
-              ? article.title.slice(0, 50) + "..."
-              : article.title}
-          </Typography>
-
+          <Link to={`/${article.article_id}`}>
+            <Typography
+              variant="h6"
+              component="div"
+              gutterBottom
+              sx={{
+                fontSize: "30px",
+                fontWeight: "bolder",
+                flexGrow: 1,
+                padding: "1rem",
+                color: "black",
+              }}
+            >
+              {article.title.length > 50
+                ? article.title.slice(0, 50) + "..."
+                : article.title}
+            </Typography>
+          </Link>
           {/* Description */}
           <Typography
             variant="body2"
@@ -120,7 +115,7 @@ export const ArticleCards = ({ article, users }) => {
               width: "100%",
             }}
           >
-            <Link to={`/${article.id}`}>
+            <Link to={`/${article.article_id}`}>
               <Avatar
                 alt={article.author}
                 src={articleAuthorImg}
