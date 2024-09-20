@@ -6,6 +6,7 @@ import { Grid2, Container } from "@mui/material";
 import { UserContext } from "./UserContext";
 import { postCommentToArticleById, deleteCommentById } from "../api";
 import "./articlepage.css";
+import like from "../assets/like.png";
 
 export const ArticlePage = ({ users }) => {
   const { loggedInUser } = useContext(UserContext);
@@ -181,7 +182,7 @@ export const ArticlePage = ({ users }) => {
               <img
                 onClick={handleVote}
                 className={hasVoted ? "like-button liked" : "like-button"}
-                src="src/assets/like.png"
+                src={like}
                 alt="Like button, press to like article, press again to unlike"
               />
             </div>

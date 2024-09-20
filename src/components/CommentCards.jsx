@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
 import { UserContext } from "./UserContext";
+import like from "../assets/like.png";
 
 export const CommentCards = ({ comment, users, handleDeleteComment }) => {
   const { loggedInUser } = useContext(UserContext);
@@ -115,7 +116,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
             }}
           >
             <img
-              src="src/assets/like.png"
+              src={like}
               alt="Like comment button"
               style={{ width: 50, height: 50 }}
             />

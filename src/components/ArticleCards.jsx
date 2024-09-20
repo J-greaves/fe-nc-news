@@ -9,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { patchArticleVotes } from "../api";
+import like from "../assets/like.png";
 
 export const ArticleCards = ({ article, users }) => {
   const [hasVoted, setHasVoted] = useState(false);
@@ -158,7 +159,7 @@ export const ArticleCards = ({ article, users }) => {
               <img
                 onClick={handleVote}
                 className={hasVoted ? "like-button liked" : "like-button"}
-                src="src/assets/like.png"
+                src={like}
                 alt="Like button, press to like article, press again to unlike"
               />
 
