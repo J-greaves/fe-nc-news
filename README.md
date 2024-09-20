@@ -1,6 +1,6 @@
-# Project Name
+# NC News
 
-[Live App Link](https://your-deployed-app-link.com)
+[Live App Link](https://nc-news-jg.netlify.app/)
 
 ## Table of Contents
 
@@ -14,70 +14,97 @@
 
 ## General Info
 
-This project is a [brief description of what the project does]. It provides [a brief overview of the main features or purpose]. Users can [outline key user functionalities or actions, e.g., browse articles, vote on posts, etc.].
+This project is **Northcoders News**, a social news aggregation platform designed to facilitate the sharing and discussion of articles among users. The website allows users to explore a wide variety of articles organized by specific topics, making it easy to find content that interests them.
+
+### Key Features:
+
+- **Article Exploration**: Users can view a comprehensive list of articles, each featuring rich content, images, and user ratings.
+- **User Interaction**: Registered users can upvote articles, providing valuable feedback and highlighting popular content.
+- **Commenting System**: Users have the ability to leave comments on articles, fostering discussion and engagement within the community.
+- **Topic-Based Navigation**: Articles are categorized into various topics, allowing users to filter their reading experience based on their interests.
+
+The Northcoders News application leverages a robust API that handles user interactions, including article retrieval, voting, and commenting, ensuring a seamless and dynamic user experience. This project not only showcases the power of modern web technologies but also emphasizes the importance of community engagement and content sharing in today’s digital landscape.
 
 ## Features
 
-- Feature 1: [Describe feature]
-- Feature 2: [Describe feature]
-- Feature 3: [Describe feature]
+- View a list of all articles
+- View an individual article
+- View a list of comments associated with an article
+- Vote on an article
+- Post a new comment to an existing article
+- Delete comments
+- View a separate page for each topic with a list of related articles
+- Sort articles
 
 ## Technologies
 
 This app was built with:
 
-- React
-- React Router DOM
-- Material UI
-- Node.js (version X.X.X or higher)
-- [Add any other technologies or libraries you used]
+- **Frontend**:
+
+  - React
+  - React Router DOM
+  - Material UI
+  - Axios
+  - Vite (for development and build)
+
+- **Hosting**:
+
+  - Netlify (for hosting the frontend)
+  - Supabase (for backend services)
+  - Render (for hosting the backend)
 
 ## Back End Repo
 
 You can find the backend code for this project at:  
-[Back End Repository Link](https://github.com/your-backend-repo)
+[Back End Repository Link](https://github.com/J-greaves/nc-news-api)
 
 ## Prerequisites
 
 To run this project locally, you will need the following installed on your machine:
 
-- Node.js (version X.X.X or higher)
+- Node.js (version 16.x or higher)
 - NPM (usually included with Node.js)
 
 You can check your Node version by running the following command in your terminal:
 
 ```bash
 node --version
-Installation and Setup
+```
+
+##Installation and Setup
 To get the project up and running locally, follow these steps:
 
 Clone the repository:
 
-bash
-Copy code
-git clone <repo-url>
-Navigate into the project directory:
+## Installation and Setup
 
-bash
-Copy code
-cd <your-project-folder>
-Install the dependencies:
+To get the project up and running locally, follow these steps:
 
-bash
-Copy code
-npm install
-Run the development server:
+1. Clone the repository:
 
-bash
-Copy code
-npm start
-The app should now be running on http://localhost:3000 in your browser.
+   ```bash
+   git clone <repo-url>
+   ```
 
-For production builds:
+2. Navigate into the project directory:
 
-bash
-Copy code
-npm run build
-Credits
+   ```bash
+   cd <your-project-folder>
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   The app should now be running on [http://localhost:5174/](http://localhost:5174/)(see terminal)
+
+## Credits
+
 This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by Northcoders.
-```
