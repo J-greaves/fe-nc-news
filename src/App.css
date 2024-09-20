@@ -31,7 +31,6 @@ header {
   z-index: 999;
 }
 
-/* Logo Styling */
 .logo-set {
   display: flex;
   flex-direction: row;
@@ -103,6 +102,9 @@ header {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+  object-fit: cover;
+  clip-path: circle(50% at 50% 50%);
 }
 
 .userImg:hover {

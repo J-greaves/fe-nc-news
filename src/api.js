@@ -4,22 +4,20 @@ const ncNews = axios.create({
   baseURL: "https://nc-news-api-jg.onrender.com/api",
 });
 
-export const getArticles = (articleId, getComments) => {
-  let route = `/articles`;
-  if (articleId) {
-    route += `/${articleId}`;
+export const getArticles = (
+  sort_by = "created_at",
+  order = "desc",
+  topic = null,
+  pageSize = 10,
+  page = 1
+) => {
+  let route = `/articles?sort_by=${sort_by}&order=${order}&limit=${pageSize}&p=${page}`;
+  if (topic) {
+    route += `&topic=${topic}`;
   }
-  if (getComments) {
-    route += `/comments`;
-  }
-  return ncNews
-    .get(route)
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  return ncNews.get(route).then(({ data }) => {
+    return data;
+  });
 };
 
 export const getUsers = () => {
@@ -38,10 +36,30 @@ export const postCommentToArticleById = (articleId, newComment) => {
   return ncNews
     .post(`/articles/${articleId}/comments`, newComment)
     .then(({ data }) => {
-      console.log(data);
+      return data;
+    });
+};
+
+export const deleteCommentById = (commentId) => {
+  return ncNews
+    .delete(`/comments/${commentId}`)
+    .then(({ data }) => {
       return data;
     })
     .catch((error) => {
-      console.log(error);
+      throw error;
     });
+};
+
+export const getArticlesById = (articleId) => {
+  return ncNews.get(`articles/${articleId}`).then(({ data }) => {
+    return data;
+  });
+};
+
+export const getArticleComments = (articleId) => {
+  return ncNews.get(`articles/${articleId}/comments`).then(({ data }) => {
+    console.log(data);
+    return data;
+  });
 };

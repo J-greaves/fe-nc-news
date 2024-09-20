@@ -4,15 +4,15 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
+    const savedUser = sessionStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   useEffect(() => {
     if (loggedInUser) {
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      sessionStorage.setItem("user", JSON.stringify(loggedInUser));
     } else {
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
     }
   }, [loggedInUser]);
 
