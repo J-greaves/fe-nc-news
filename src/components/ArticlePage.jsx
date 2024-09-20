@@ -166,7 +166,6 @@ export const ArticlePage = ({ users }) => {
   const articleTopic = article.topic;
   const articleCreatedAt = article.created_at;
   const articleBody = article.body;
-  const commentId = comment.comment_id;
 
   return (
     <article className="flexbox-container">
@@ -242,7 +241,12 @@ export const ArticlePage = ({ users }) => {
             </p>
           ) : (
             comments.map((comment) => (
-              <Grid2 item xs={12} key={commentId} sx={{ width: "100%" }}>
+              <Grid2
+                item
+                xs={12}
+                key={comment.comment_id}
+                sx={{ width: "100%" }}
+              >
                 <CommentCards
                   comment={comment}
                   users={users}
