@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ArticleCards } from "./ArticleCards";
-import { Grid2, Container, Button, Box } from "@mui/material";
+import { Grid2, Container, Button, Box, Select, MenuItem } from "@mui/material";
 import { getArticles } from "../api";
 import { useSearchParams } from "react-router-dom";
 import "../App.css";
@@ -9,6 +9,8 @@ export const Home = ({ votes, setVotes, users }) => {
   const [articles, setArticles] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const topicQuery = searchParams.get("topic");
+  const sort_by = searchParams.get("sort_by") || "created_at";
+  const order = searchParams.get("order") || "desc";
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -16,7 +18,7 @@ export const Home = ({ votes, setVotes, users }) => {
 
   useEffect(() => {
     setLoading(true);
-    getArticles("created_at", "desc", topicQuery, articlesPerPage, page)
+    getArticles(sort_by, order, topicQuery, articlesPerPage, page)
       .then((data) => {
         setArticles(data.articles);
         setTotalCount(data.total_count);
@@ -26,7 +28,14 @@ export const Home = ({ votes, setVotes, users }) => {
         console.error("Failed to fetch articles:", error);
         setLoading(false);
       });
-  }, [page, topicQuery]);
+  }, [page, sort_by, order, topicQuery]);
+
+  const handleSortChange = (event) => {
+    const value = event.target.value;
+    const [newSortBy, newOrder] = value.split("-");
+    setSearchParams({ sort_by: newSortBy, order: newOrder, page: 1 });
+    setPage(1);
+  };
 
   const handleLoadMore = () => {
     if (articles.length < totalCount) {
@@ -55,6 +64,26 @@ export const Home = ({ votes, setVotes, users }) => {
       }}
     >
       <h2 style={{ textAlign: "center", width: "100%" }}>Latest News</h2>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}
+      >
+        <Select
+          value={`${sort_by}-${order}`}
+          onChange={handleSortChange}
+          sx={{ width: "200px" }}
+        >
+          <MenuItem value="created_at-asc">Date (Ascending)</MenuItem>
+          <MenuItem value="created_at-desc">Date (Descending)</MenuItem>
+          <MenuItem value="comment_count-asc">
+            Comment Count (Ascending)
+          </MenuItem>
+          <MenuItem value="comment_count-desc">
+            Comment Count (Descending)
+          </MenuItem>
+          <MenuItem value="votes-asc">Votes (Ascending)</MenuItem>
+          <MenuItem value="votes-desc">Votes (Descending)</MenuItem>
+        </Select>
+      </Box>
       <Grid2
         container
         spacing={2}

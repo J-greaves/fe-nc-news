@@ -1,10 +1,5 @@
 import { useParams } from "react-router-dom";
-import {
-  getArticleComments,
-  getArticles,
-  getArticlesById,
-  patchArticleVotes,
-} from "../api";
+import { getArticleComments, getArticlesById, patchArticleVotes } from "../api";
 import { useState, useEffect, useContext } from "react";
 import { CommentCards } from "./CommentCards";
 import { Grid2, Container } from "@mui/material";

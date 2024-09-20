@@ -5,8 +5,8 @@ const ncNews = axios.create({
 });
 
 export const getArticles = (
-  sort_by = "created_at",
-  order = "desc",
+  sort_by,
+  order,
   topic = null,
   pageSize = 10,
   page = 1
