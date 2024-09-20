@@ -18,8 +18,36 @@ export const ArticlePage = ({ users }) => {
   const [hasVoted, setHasVoted] = useState(false);
   const [commentInput, setCommentInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [deletedCommentId, setDeletedCommentId] = useState(null);
   const [deletionMessage, setDeletionMessage] = useState("");
+
+  useEffect(() => {
+    setLoading(true);
+    getArticlesById(articleId)
+      .then(({ article }) => {
+        setArticle(article);
+        setVotes(article.votes);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setErrorMessage(error.response?.data?.msg || "Failed to load article.");
+      });
+  }, [articleId]);
+
+  useEffect(() => {
+    setLoading(true);
+    getArticleComments(articleId)
+      .then(({ comments }) => {
+        setComments(comments);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setErrorMessage(
+          error.response?.data?.msg || "Failed to load comments."
+        );
+      });
+  }, [articleId]);
 
   function handleVote() {
     const plus_vote = { inc_votes: 1 };
@@ -103,47 +131,16 @@ export const ArticlePage = ({ users }) => {
           setDeletionMessage("Comment Successfully Deleted");
         })
         .catch((error) => {
-          console.log(error);
           setComments((prevComments) => [commentToDelete, ...prevComments]);
           setDeletionMessage("Failed to delete comment.");
         })
         .finally(() => {
           setTimeout(() => {
             setDeletionMessage("");
-            setDeletedCommentId(null);
           }, 3000);
         });
     }
   }
-
-  useEffect(() => {
-    getArticlesById(articleId)
-      .then(({ article }) => {
-        setArticle(article);
-        setVotes(article.votes);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        // Set the error message to display
-        setErrorMessage(error.response?.data?.msg || "Failed to load article.");
-      });
-  }, [articleId]);
-
-  useEffect(() => {
-    getArticleComments(articleId)
-      .then(({ comments }) => {
-        setComments(comments);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        // Set the error message to display
-        setErrorMessage(
-          error.response?.data?.msg || "Failed to load comments."
-        );
-      });
-  }, [articleId]);
 
   if (loading) {
     return <p className="loading-info">Loading...</p>;
@@ -160,28 +157,21 @@ export const ArticlePage = ({ users }) => {
     );
   }
 
-  const articleImage = article.article_img_url;
-  const articleTitle = article.title;
-  const articleAuthor = article.author;
-  const articleTopic = article.topic;
-  const articleCreatedAt = article.created_at;
-  const articleBody = article.body;
-
   return (
     <article className="flexbox-container">
       <section className="flexbox-row">
-        <img className="article-image" src={articleImage} />
+        <img className="article-image" src={article.article_img_url} />
         <div className="article-details">
-          <h1 className="article-title">{articleTitle}</h1>
+          <h1 className="article-title">{article.title}</h1>
           <div className="details-likes">
             <div className="details-section">
-              <h2 className="article-detail">Author: {articleAuthor}</h2>
+              <h2 className="article-detail">Author: {article.author}</h2>
               <h2 className="article-detail">
                 Topic:{" "}
-                {articleTopic.charAt(0).toUpperCase() + articleTopic.slice(1)}
+                {article.topic.charAt(0).toUpperCase() + article.topic.slice(1)}
               </h2>
               <h2 className="article-detail">
-                Date Submitted: {new Date(articleCreatedAt).toDateString()}
+                Date Submitted: {new Date(article.created_at).toDateString()}
               </h2>
             </div>
             <div className="article-likes">
@@ -197,7 +187,7 @@ export const ArticlePage = ({ users }) => {
         </div>
       </section>
       <section className="article-body">
-        <p>{articleBody}</p>
+        <p>{article.body}</p>
       </section>
       <Container
         maxWidth="md"
