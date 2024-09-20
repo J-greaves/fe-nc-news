@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ArticleCards } from "./ArticleCards";
 import { Grid2, Container, Button, Box } from "@mui/material";
 import { getArticles } from "../api";
+import { useSearchParams } from "react-router-dom";
 import "../App.css";
 
 export const Home = ({ votes, setVotes, users }) => {
   const [articles, setArticles] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const topicQuery = searchParams.get("topic");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -13,7 +16,7 @@ export const Home = ({ votes, setVotes, users }) => {
 
   useEffect(() => {
     setLoading(true);
-    getArticles("created_at", "desc", null, articlesPerPage, page)
+    getArticles("created_at", "desc", topicQuery, articlesPerPage, page)
       .then((data) => {
         setArticles(data.articles);
         setTotalCount(data.total_count);
@@ -23,7 +26,7 @@ export const Home = ({ votes, setVotes, users }) => {
         console.error("Failed to fetch articles:", error);
         setLoading(false);
       });
-  }, [page]);
+  }, [page, topicQuery]);
 
   const handleLoadMore = () => {
     if (articles.length < totalCount) {
