@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Header } from "./components/Header";
 import { BurgerMenu } from "./components/BurgerMenu";
 import { Home } from "./components/Home";
+import { NotFoundPage } from "./components/NotFoundPage";
 import "./App.css";
 import { ArticlePage } from "./components/ArticlePage";
 import { useState, useEffect } from "react";
@@ -29,7 +30,7 @@ function App() {
             element={<Home votes={votes} setVotes={setVotes} users={users} />}
           />
           <Route
-            path="/:articleId"
+            path="/articles/:articleId"
             element={
               <ArticlePage votes={votes} setVotes={setVotes} users={users} />
             }
@@ -38,6 +39,7 @@ function App() {
             path="/signin"
             element={<UserPage users={users} setusers={setUsers} />}
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </UserProvider>

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { useContext } from "react";
+import globeLogo from "../assets/logo.png";
+import ncLogo from "../assets/NC.svg";
+import unknownUser from "../assets/unknownUser.png";
 
 export const Header = () => {
   const { loggedInUser } = useContext(UserContext);
@@ -11,24 +14,16 @@ export const Header = () => {
         <div className="logo-set">
           <img
             className="logo globeLogo"
-            src="src/assets/logo.png"
+            src={globeLogo}
             alt="NC News globe logo"
           />
-          <img
-            className="logo"
-            src="src/assets/NC.svg"
-            alt="NC News logo text"
-          />
+          <img className="logo" src={ncLogo} alt="NC News logo text" />
         </div>
       </Link>
       <input className="searchbar" type="text" placeholder="Search.."></input>
       <Link to="/signin">
         <img
-          src={
-            loggedInUser
-              ? loggedInUser.avatar_url
-              : "src/assets/unknownUser.png"
-          }
+          src={loggedInUser ? loggedInUser.avatar_url : unknownUser}
           alt="Right Side Image"
           className="userImg"
         />

@@ -124,7 +124,8 @@ export const ArticlePage = ({ users }) => {
       })
       .catch((error) => {
         setLoading(false);
-        return <p className="loading-info">{error}</p>;
+        // Set the error message to display
+        setErrorMessage(error.response?.data?.msg || "Failed to load article.");
       });
   }, [articleId]);
 
@@ -136,7 +137,10 @@ export const ArticlePage = ({ users }) => {
       })
       .catch((error) => {
         setLoading(false);
-        return <p className="loading-info">{error}</p>;
+        // Set the error message to display
+        setErrorMessage(
+          error.response?.data?.msg || "Failed to load comments."
+        );
       });
   }, [articleId]);
 
@@ -144,8 +148,15 @@ export const ArticlePage = ({ users }) => {
     return <p className="loading-info">Loading...</p>;
   }
 
-  if (!article) {
-    return <p className="loading-info">Article not found!</p>;
+  if (errorMessage) {
+    return (
+      <p
+        className="error-message"
+        style={{ color: "red", textAlign: "center" }}
+      >
+        {errorMessage}
+      </p>
+    );
   }
 
   return (

@@ -57,7 +57,7 @@ export const ArticleCards = ({ article, users }) => {
       }}
     >
       {/* Thumbnail */}
-      <Link to={`/${article.article_id}`}>
+      <Link to={`/articles/${article.article_id}`}>
         <CardMedia
           component="img"
           sx={{
@@ -82,7 +82,7 @@ export const ArticleCards = ({ article, users }) => {
       >
         <CardContent sx={{ width: "100%" }}>
           {/* Title */}
-          <Link to={`/${article.article_id}`}>
+          <Link to={`/articles/${article.article_id}`}>
             <Typography
               variant="h6"
               component="div"
@@ -119,7 +119,7 @@ export const ArticleCards = ({ article, users }) => {
               width: "100%",
             }}
           >
-            <Link to={`/${article.article_id}`}>
+            <Link to={`/signin`}>
               <Avatar
                 alt={article.author}
                 src={articleAuthorImg}
