@@ -1,10 +1,15 @@
 import { useParams } from "react-router-dom";
-import { getArticles, patchArticleVotes } from "../api";
+import {
+  getArticleComments,
+  getArticles,
+  getArticlesById,
+  patchArticleVotes,
+} from "../api";
 import { useState, useEffect, useContext } from "react";
 import { CommentCards } from "./CommentCards";
 import { Grid2, Container } from "@mui/material";
 import { UserContext } from "./UserContext";
-import { postCommentToArticleById } from "../api";
+import { postCommentToArticleById, deleteCommentById } from "../api";
 import "./articlepage.css";
 
 export const ArticlePage = ({ users }) => {
@@ -17,22 +22,28 @@ export const ArticlePage = ({ users }) => {
   const [hasVoted, setHasVoted] = useState(false);
   const [commentInput, setCommentInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [deletedCommentId, setDeletedCommentId] = useState(null);
+  const [deletionMessage, setDeletionMessage] = useState("");
 
   function handleVote() {
     const plus_vote = { inc_votes: 1 };
     const minus_vote = { inc_votes: -1 };
     const articleId = article.article_id;
-    if (hasVoted === false) {
-      patchArticleVotes(articleId, plus_vote).then(({ article }) => {
-        setHasVoted(true);
+
+    const newVotes = hasVoted ? votes - 1 : votes + 1;
+    setVotes(newVotes);
+    setHasVoted(!hasVoted);
+
+    const voteChange = hasVoted ? minus_vote : plus_vote;
+
+    patchArticleVotes(articleId, voteChange)
+      .then(({ article }) => {
         setVotes(article.votes);
+      })
+      .catch((error) => {
+        setVotes(votes);
+        setHasVoted(hasVoted);
       });
-    } else {
-      patchArticleVotes(articleId, minus_vote).then(({ article }) => {
-        setHasVoted(false);
-        setVotes(article.votes);
-      });
-    }
   }
 
   const handleCommentChange = (event) => setCommentInput(event.target.value);
@@ -56,7 +67,7 @@ export const ArticlePage = ({ users }) => {
         author: loggedInUser.username,
         commentAuthorImg: loggedInUser.avatar_url,
       };
-      setComments((prevComments) => [...prevComments, optimisticComment]);
+      setComments((prevComments) => [optimisticComment, ...prevComments]);
       setCommentInput("");
       setErrorMessage("");
       postCommentToArticleById(articleId, newComment)
@@ -66,6 +77,8 @@ export const ArticlePage = ({ users }) => {
               c.comment_id === optimisticComment.comment_id ? comment : c
             )
           );
+
+          setErrorMessage("Comment posted successfully!");
         })
         .catch(() => {
           setComments((prevComments) =>
@@ -78,8 +91,37 @@ export const ArticlePage = ({ users }) => {
     }
   }
 
+  function handleDeleteComment(comment_id) {
+    const commentToDelete = comments.find(
+      (comment) => comment.comment_id === comment_id
+    );
+
+    if (commentToDelete) {
+      const updatedComments = comments.filter(
+        (comment) => comment.comment_id !== comment_id
+      );
+      setComments(updatedComments);
+
+      deleteCommentById(comment_id)
+        .then(() => {
+          setDeletionMessage("Comment Successfully Deleted");
+        })
+        .catch((error) => {
+          console.log(error);
+          setComments((prevComments) => [commentToDelete, ...prevComments]);
+          setDeletionMessage("Failed to delete comment.");
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setDeletionMessage("");
+            setDeletedCommentId(null);
+          }, 3000);
+        });
+    }
+  }
+
   useEffect(() => {
-    getArticles(articleId)
+    getArticlesById(articleId)
       .then(({ article }) => {
         setArticle(article);
         setVotes(article.votes);
@@ -92,7 +134,7 @@ export const ArticlePage = ({ users }) => {
   }, [articleId]);
 
   useEffect(() => {
-    getArticles(articleId, "getComments")
+    getArticleComments(articleId)
       .then(({ comments }) => {
         setComments(comments);
         setLoading(false);
@@ -164,16 +206,42 @@ export const ArticlePage = ({ users }) => {
           justifyContent="center"
           sx={{ width: "100%", margin: 0 }}
         >
-          {comments.map((comment, index) => (
-            <Grid2 item xs={12} key={index} sx={{ width: "100%" }}>
-              <CommentCards
-                comment={comment}
-                users={users}
-                votes={votes}
-                setVotes={setVotes}
-              />
-            </Grid2>
-          ))}
+          {deletionMessage ? (
+            <p
+              style={{
+                fontSize: "xx-large",
+                border: "black solid 5px",
+                backgroundColor:
+                  deletionMessage === "Failed to delete comment."
+                    ? "rgba(255, 27, 27, 0.3)"
+                    : "rgba(0, 255, 79, 0.2)",
+                color: "black",
+                padding: "1rem",
+                textAlign: "center",
+                borderRadius: "20px",
+              }}
+            >
+              {deletionMessage}
+              <br />
+              Reloading...
+            </p>
+          ) : (
+            comments.map((comment) => (
+              <Grid2
+                item
+                xs={12}
+                key={comment.comment_id}
+                sx={{ width: "100%" }}
+              >
+                <CommentCards
+                  comment={comment}
+                  users={users}
+                  handleDeleteComment={handleDeleteComment}
+                  deletionMessage={deletionMessage}
+                />
+              </Grid2>
+            ))
+          )}
         </Grid2>
       </Container>
       <form for="comments" onSubmit={handleSubmit}>
@@ -197,7 +265,7 @@ export const ArticlePage = ({ users }) => {
           required
         ></textarea>
         {errorMessage ? (
-          <p style={{ color: "red", textAlign: "center" }}>{errorMessage}</p> // Display error message
+          <p style={{ color: "red", textAlign: "center" }}>{errorMessage}</p>
         ) : null}
         <button type="submit">Submit</button>
       </form>

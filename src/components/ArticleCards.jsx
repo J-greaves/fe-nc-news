@@ -25,17 +25,21 @@ export const ArticleCards = ({ article, users }) => {
     const plus_vote = { inc_votes: 1 };
     const minus_vote = { inc_votes: -1 };
     const articleId = article.article_id;
-    if (hasVoted === false) {
-      patchArticleVotes(articleId, plus_vote).then(({ article }) => {
-        setHasVoted(true);
+
+    const newVotes = hasVoted ? votes - 1 : votes + 1;
+    setVotes(newVotes);
+    setHasVoted(!hasVoted);
+
+    const voteChange = hasVoted ? minus_vote : plus_vote;
+
+    patchArticleVotes(articleId, voteChange)
+      .then(({ article }) => {
         setVotes(article.votes);
+      })
+      .catch((error) => {
+        setVotes(votes);
+        setHasVoted(hasVoted);
       });
-    } else {
-      patchArticleVotes(articleId, minus_vote).then(({ article }) => {
-        setHasVoted(false);
-        setVotes(article.votes);
-      });
-    }
   }
 
   return (

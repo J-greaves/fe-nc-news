@@ -1,17 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Avatar,
-  Box,
-} from "@mui/material";
+import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
+import { UserContext } from "./UserContext";
 
-export const CommentCards = ({ comment, users }) => {
+export const CommentCards = ({ comment, users, handleDeleteComment }) => {
+  const { loggedInUser } = useContext(UserContext);
+
   let commentAuthorImg = null;
-
   users.forEach((user) => {
     if (comment.author === user.username) {
       commentAuthorImg = user.avatar_url;
@@ -22,8 +17,8 @@ export const CommentCards = ({ comment, users }) => {
     <Card
       sx={{
         display: "flex",
+        flexDirection: "column",
         mb: 2,
-        flexDirection: { xs: "column", sm: "row" },
         width: "100%",
         boxShadow: 3,
         transition: "0.3s",
@@ -32,51 +27,45 @@ export const CommentCards = ({ comment, users }) => {
         },
       }}
     >
-      {/* Content */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          flexGrow: 1,
-          width: "100%",
-        }}
-      >
-        <CardContent sx={{ width: "100%" }}>
-          {/* Title */}
-          <Typography
-            variant="h6"
-            component="div"
-            gutterBottom
-            sx={{
-              fontSize: "25px",
-              fontWeight: "bolder",
-              flexGrow: 1,
-              padding: "1rem",
-            }}
-          >
-            {comment.author +
-              " @ " +
-              new Date(comment.created_at).toDateString()}
-          </Typography>
+      <CardContent sx={{ padding: "1rem" }}>
+        {/* Username and Date Heading */}
+        <Typography
+          variant="h6"
+          component="div"
+          gutterBottom
+          sx={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginBottom: "1rem",
+          }}
+        >
+          {comment.author + " @ " + new Date(comment.created_at).toDateString()}
+        </Typography>
 
-          {/* Description */}
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ width: "100vw%", marginRight: "1rem" }}
-          >
-            {comment.body}
-          </Typography>
+        {/* Comment Body */}
+        <Typography
+          variant="body1"
+          color="text.primary"
+          sx={{ marginBottom: "1rem", fontSize: "16px" }}
+        >
+          {comment.body}
+        </Typography>
 
-          {/* Author and Date */}
+        {/* Footer with Avatar, Submitted By, Likes, Delete */}
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+          {/* Avatar Section */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              mt: 2,
-              flexWrap: "wrap",
-              width: "100%",
+              flexBasis: "25%",
+              justifyContent: "center",
             }}
           >
             <Link to={`/${comment.article_id}`}>
@@ -91,42 +80,83 @@ export const CommentCards = ({ comment, users }) => {
                 }}
               />
             </Link>
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="caption" color="text.secondary">
-                Submitted by:
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                sx={{ fontSize: "large", color: "black" }}
-              >
-                {comment.author}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {new Date(comment.created_at).toDateString()}
-              </Typography>
-            </Box>
+          </Box>
 
-            {/* Likes */}
+          {/* Submitted By Section */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              flexBasis: "25%",
+            }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              Submitted by:
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              sx={{ fontSize: "large", color: "black" }}
+            >
+              {comment.author}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {new Date(comment.created_at).toDateString()}
+            </Typography>
+          </Box>
+
+          {/* Likes Section */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexBasis: "25%",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src="src/assets/like.png"
+              alt="Like comment button"
+              style={{ width: 50, height: 50 }}
+            />
+            <Typography
+              variant="subtitle2"
+              sx={{
+                fontSize: "large",
+                fontWeight: "400",
+                marginLeft: "1rem",
+              }}
+            >
+              Likes: {comment.votes}
+            </Typography>
+          </Box>
+
+          {/* Conditional delete button for logged in user */}
+          {loggedInUser && loggedInUser.username === comment.author && (
             <Box
               sx={{
-                ml: { xs: "auto", sm: 4 },
-                mt: { xs: 2, sm: 0 },
-                textAlign: "center",
-                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                flexBasis: "25%",
+                justifyContent: "center",
               }}
             >
               <img
-                src="src/assets/like.png"
-                alt="Like"
-                style={{ width: 50, height: 50 }}
+                src="src/assets/delete.png"
+                alt="Delete comment button"
+                style={{
+                  width: 50,
+                  height: 50,
+                  cursor: "pointer",
+                  border: "black solid 3px",
+                  borderRadius: "50%",
+                }}
+                onClick={() => handleDeleteComment(comment.comment_id)}
               />
-              <Typography variant="subtitle2">
-                Likes: {comment.votes}
-              </Typography>
             </Box>
-          </Box>
-        </CardContent>
-      </Box>
+          )}
+        </Box>
+      </CardContent>
     </Card>
   );
 };
