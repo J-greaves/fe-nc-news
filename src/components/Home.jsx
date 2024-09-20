@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ArticleCards } from "./ArticleCards";
-import { Grid2, Container, Button, Box, Select, MenuItem } from "@mui/material";
+import {
+  Grid2,
+  Container,
+  Button,
+  Box,
+  Select,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { getArticles } from "../api";
 import { useSearchParams } from "react-router-dom";
 import "../App.css";
@@ -8,6 +16,7 @@ import "../App.css";
 export const Home = ({ votes, setVotes, users }) => {
   const [articles, setArticles] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [error, setError] = useState(null);
   const topicQuery = searchParams.get("topic");
   const sort_by = searchParams.get("sort_by") || "created_at";
   const order = searchParams.get("order") || "desc";
@@ -18,6 +27,7 @@ export const Home = ({ votes, setVotes, users }) => {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     getArticles(sort_by, order, topicQuery, articlesPerPage, page)
       .then((data) => {
         setArticles(data.articles);
@@ -25,7 +35,11 @@ export const Home = ({ votes, setVotes, users }) => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Failed to fetch articles:", error);
+        setError(
+          `Error ${error.response.status}: ${
+            error.response.data.msg || "An error occurred."
+          }`
+        );
         setLoading(false);
       });
   }, [page, sort_by, order, topicQuery]);
@@ -64,6 +78,11 @@ export const Home = ({ votes, setVotes, users }) => {
       }}
     >
       <h2 style={{ textAlign: "center", width: "100%" }}>Latest News</h2>
+      {error && (
+        <Typography color="error" variant="h6" align="center">
+          {error}
+        </Typography>
+      )}
       <Box
         sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}
       >

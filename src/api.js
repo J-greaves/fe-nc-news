@@ -15,9 +15,14 @@ export const getArticles = (
   if (topic) {
     route += `&topic=${topic}`;
   }
-  return ncNews.get(route).then(({ data }) => {
-    return data;
-  });
+  return ncNews
+    .get(route)
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
 
 export const getUsers = () => {
@@ -58,8 +63,13 @@ export const getArticlesById = (articleId) => {
 };
 
 export const getArticleComments = (articleId) => {
-  return ncNews.get(`articles/${articleId}/comments`).then(({ data }) => {
-    console.log(data);
-    return data;
-  });
+  return ncNews
+    .get(`articles/${articleId}/comments`)
+    .then(({ data }) => {
+      console.log(data);
+      return data;
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
