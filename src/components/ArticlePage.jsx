@@ -160,21 +160,29 @@ export const ArticlePage = ({ users }) => {
     );
   }
 
+  const articleImage = article.article_img_url;
+  const articleTitle = article.title;
+  const articleAuthor = article.author;
+  const articleTopic = article.topic;
+  const articleCreatedAt = article.created_at;
+  const articleBody = article.body;
+  const commentId = comment.comment_id;
+
   return (
     <article className="flexbox-container">
       <section className="flexbox-row">
-        <img className="article-image" src={article.article_img_url} />
+        <img className="article-image" src={articleImage} />
         <div className="article-details">
-          <h1 className="article-title">{article.title}</h1>
+          <h1 className="article-title">{articleTitle}</h1>
           <div className="details-likes">
             <div className="details-section">
-              <h2 className="article-detail">Author: {article.author}</h2>
+              <h2 className="article-detail">Author: {articleAuthor}</h2>
               <h2 className="article-detail">
                 Topic:{" "}
-                {article.topic.charAt(0).toUpperCase() + article.topic.slice(1)}
+                {articleTopic.charAt(0).toUpperCase() + articleTopic.slice(1)}
               </h2>
               <h2 className="article-detail">
-                Date Submitted: {new Date(article.created_at).toDateString()}
+                Date Submitted: {new Date(articleCreatedAt).toDateString()}
               </h2>
             </div>
             <div className="article-likes">
@@ -190,7 +198,7 @@ export const ArticlePage = ({ users }) => {
         </div>
       </section>
       <section className="article-body">
-        <p>{article.body}</p>
+        <p>{articleBody}</p>
       </section>
       <Container
         maxWidth="md"
@@ -234,12 +242,7 @@ export const ArticlePage = ({ users }) => {
             </p>
           ) : (
             comments.map((comment) => (
-              <Grid2
-                item
-                xs={12}
-                key={comment.comment_id}
-                sx={{ width: "100%" }}
-              >
+              <Grid2 item xs={12} key={commentId} sx={{ width: "100%" }}>
                 <CommentCards
                   comment={comment}
                   users={users}
