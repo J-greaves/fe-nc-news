@@ -26,26 +26,16 @@ export const ArticlePage = ({ users }) => {
       .then(({ article }) => {
         setArticle(article);
         setVotes(article.votes);
-        setLoading(false);
+        return getArticleComments(articleId);
       })
-      .catch((error) => {
-        setLoading(false);
-        setErrorMessage(error.response?.data?.msg || "Failed to load article.");
-      });
-  }, [articleId]);
-
-  useEffect(() => {
-    setLoading(true);
-    getArticleComments(articleId)
       .then(({ comments }) => {
         setComments(comments);
-        setLoading(false);
       })
       .catch((error) => {
+        setErrorMessage(error.response?.data?.msg || "An error occurred");
+      })
+      .finally(() => {
         setLoading(false);
-        setErrorMessage(
-          error.response?.data?.msg || "Failed to load comments."
-        );
       });
   }, [articleId]);
 
