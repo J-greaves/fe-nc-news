@@ -13,7 +13,6 @@ body {
   background-color: #f4f4f4;
 }
 
-/* Header Styling */
 header {
   display: flex;
   align-items: center;
@@ -46,8 +45,8 @@ header {
 
 .logo {
   transition: filter 300ms;
-  height: 9vw;
-  min-height: 50px;
+  height: 8vw;
+  min-height: 35px;
   max-height: 100px;
   margin: 0;
   width: auto;
@@ -139,4 +138,16 @@ h2 {
   box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.466);
   filter: drop-shadow(0 0 0.65rem #990000af);
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .logo-set {
+    border: transparent;
+  }
+  header {
+    height: 100px;
+  }
+  .userImg {
+    right: 10px;
+  }
 }
