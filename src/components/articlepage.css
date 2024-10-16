@@ -8,7 +8,7 @@
 }
 
 .flexbox-row {
-  margin-top: 5rem;
+  margin-top: 4rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -114,6 +114,7 @@
 @media screen and (max-width: 768px) {
   .flexbox-row {
     flex-direction: column;
+    margin-top: 0rem;
   }
   .details-likes {
     flex-direction: column;
