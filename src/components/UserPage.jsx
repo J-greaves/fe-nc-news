@@ -9,15 +9,23 @@ export const UserPage = ({ users }) => {
   };
 
   return (
-    <div>
-      <h2 style={{ color: "black" }}>Select a user to sign in</h2>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <h2 style={{ color: "black", fontSize: "clamp(16px, 10vw, 40px)" }}>
+        Select a user to sign in
+      </h2>
       {loggedInUser ? (
         <p style={{ color: "green" }}>
           You are currently signed in as: {loggedInUser.name}
         </p>
       ) : null}
 
-      <div style={{ display: "flex", gap: "1rem" }}>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
         {users.map((user) => (
           <div
             key={user.username}
@@ -29,11 +37,13 @@ export const UserPage = ({ users }) => {
               alt={user.name}
               style={{ width: "100px", height: "100px", borderRadius: "50%" }}
             />
-            <p>{user.name}</p>
+            <p style={{ color: "black" }}>{user.name}</p>
           </div>
         ))}
       </div>
-      <button onClick={() => handleSignIn(null)}>Log Out</button>
+      {loggedInUser ? (
+        <button onClick={() => handleSignIn(null)}>Log Out</button>
+      ) : null}
     </div>
   );
 };

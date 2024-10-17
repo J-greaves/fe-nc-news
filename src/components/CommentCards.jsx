@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
 import { UserContext } from "./UserContext";
 import like from "../assets/like.png";
 import deleteImg from "../assets/delete.png";
+import { patchCommentVotes } from "../api";
 
 export const CommentCards = ({ comment, users, handleDeleteComment }) => {
   const { loggedInUser } = useContext(UserContext);
+  const [hasVoted, setHasVoted] = useState(false);
+  const [votes, setVotes] = useState(comment.votes);
 
   let commentAuthorImg = null;
   users.forEach((user) => {
@@ -14,6 +17,27 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
       commentAuthorImg = user.avatar_url;
     }
   });
+
+  function handleLikeComment() {
+    const plus_vote = { inc_votes: 1 };
+    const minus_vote = { inc_votes: -1 };
+    const commentId = comment.comment_id;
+
+    const newVotes = hasVoted ? votes - 1 : votes + 1;
+    setVotes(newVotes);
+    setHasVoted(!hasVoted);
+
+    const voteChange = hasVoted ? minus_vote : plus_vote;
+
+    patchCommentVotes(commentId, voteChange)
+      .then(({ comment }) => {
+        setVotes(comment.votes);
+      })
+      .catch((error) => {
+        setVotes(votes);
+        setHasVoted(hasVoted);
+      });
+  }
 
   return (
     <Card
@@ -122,6 +146,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
           >
             <img
               src={like}
+              className={hasVoted ? "like-button liked" : "like-button"}
               alt="Like comment button"
               style={{
                 width: "11vw",
@@ -130,6 +155,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
                 maxHeight: "80px",
                 maxWidth: "80px",
               }}
+              onClick={() => handleLikeComment(comment.comment_id)}
             />
             <Typography
               variant="subtitle2"
@@ -139,7 +165,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
                 marginLeft: "1rem",
               }}
             >
-              Likes: {comment.votes}
+              Likes: {votes}
             </Typography>
             {loggedInUser && loggedInUser.username === comment.author && (
               <img
@@ -156,8 +182,6 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
               />
             )}
           </Box>
-
-          {/* Conditional delete button for logged in user */}
         </Box>
       </CardContent>
     </Card>
