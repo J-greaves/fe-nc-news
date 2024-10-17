@@ -19,6 +19,7 @@ export const ArticlePage = ({ users }) => {
   const [commentInput, setCommentInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [deletionMessage, setDeletionMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -84,6 +85,7 @@ export const ArticlePage = ({ users }) => {
       setComments((prevComments) => [optimisticComment, ...prevComments]);
       setCommentInput("");
       setErrorMessage("");
+      setSuccessMessage("");
       postCommentToArticleById(articleId, newComment)
         .then(({ comment }) => {
           setComments((prevComments) =>
@@ -91,8 +93,8 @@ export const ArticlePage = ({ users }) => {
               c.comment_id === optimisticComment.comment_id ? comment : c
             )
           );
-
-          setErrorMessage("Comment posted successfully!");
+          setSuccessMessage("Comment posted successfully!");
+          setTimeout(() => setSuccessMessage(""), 3000);
         })
         .catch(() => {
           setComments((prevComments) =>
@@ -127,7 +129,7 @@ export const ArticlePage = ({ users }) => {
         .finally(() => {
           setTimeout(() => {
             setDeletionMessage("");
-          }, 3000);
+          }, 2000);
         });
     }
   }
@@ -187,8 +189,58 @@ export const ArticlePage = ({ users }) => {
           justifyContent: "center",
           flexDirection: "column",
           padding: "0 !important",
+          alignContent: "center",
         }}
       >
+        <form for="comments" onSubmit={handleSubmit}>
+          <h2
+            style={{
+              textAlign: "center",
+              width: "100%",
+              fontSize: "xx-large",
+              marginBottom: "0",
+              marginTop: 0,
+            }}
+          >
+            Post a comment:
+          </h2>
+          <textarea
+            value={commentInput}
+            style={{
+              alignSelf: "center",
+            }}
+            onChange={(event) => {
+              setErrorMessage("");
+              handleCommentChange(event);
+            }}
+            placeholder="Type your comment here..."
+            required
+          ></textarea>
+          {successMessage ? (
+            <p
+              style={{
+                fontSize: "large",
+                border: "black solid 5px",
+                backgroundColor: "rgba(0, 255, 79, 0.2)",
+                color: "black",
+                padding: "1rem",
+                textAlign: "center",
+                borderRadius: "20px",
+              }}
+            >
+              {successMessage}
+            </p>
+          ) : null}
+          {errorMessage ? (
+            <p style={{ color: "red", textAlign: "center" }}>{errorMessage}</p>
+          ) : null}
+          <button
+            type="submit"
+            style={{ alignSelf: "center", textAlign: "center" }}
+          >
+            Submit
+          </button>
+        </form>
         <h2
           style={{ textAlign: "center", width: "100%", fontSize: "xx-large" }}
         >
@@ -203,7 +255,7 @@ export const ArticlePage = ({ users }) => {
           {deletionMessage ? (
             <p
               style={{
-                fontSize: "xx-large",
+                fontSize: "large",
                 border: "black solid 5px",
                 backgroundColor:
                   deletionMessage === "Failed to delete comment."
@@ -238,31 +290,6 @@ export const ArticlePage = ({ users }) => {
           )}
         </Grid2>
       </Container>
-      <form for="comments" onSubmit={handleSubmit}>
-        <h2
-          style={{
-            textAlign: "center",
-            width: "100%",
-            fontSize: "xx-large",
-            marginBottom: "0",
-          }}
-        >
-          Post a comment:
-        </h2>
-        <textarea
-          value={commentInput}
-          onChange={(event) => {
-            setErrorMessage("");
-            handleCommentChange(event);
-          }}
-          placeholder="Type your comment here..."
-          required
-        ></textarea>
-        {errorMessage ? (
-          <p style={{ color: "red", textAlign: "center" }}>{errorMessage}</p>
-        ) : null}
-        <button type="submit">Submit</button>
-      </form>
     </article>
   );
 };

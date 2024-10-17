@@ -6,11 +6,11 @@ export const BurgerMenu = () => {
   // NOTE: You also need to provide styles, see https://github.com/negomi/react-burger-menu#styling
   return (
     <Menu>
-      <h2>
+      <h3>
         <Link id="home" className="menu-item" to="/">
           Topics
         </Link>
-      </h2>
+      </h3>
 
       <Link className="menu-item" to="/">
         All Articles
@@ -24,16 +24,16 @@ export const BurgerMenu = () => {
       <Link className="menu-item" to="/?topic=football">
         Football
       </Link>
-      <h2>
+      <h3>
         <Link id="home" className="menu-item" to="/signin">
           Users
         </Link>
-      </h2>
-      <h2>
+      </h3>
+      <h3>
         <Link id="home" className="menu-item" to="/">
           Home
         </Link>
-      </h2>
+      </h3>
     </Menu>
   );
 };

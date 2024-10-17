@@ -75,8 +75,10 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
                 alt="Comment author avatar image"
                 src={commentAuthorImg}
                 sx={{
-                  width: 96,
-                  height: 96,
+                  width: "18vw",
+                  maxWidth: "100px",
+                  height: "20vw",
+                  maxHeight: "120px",
                   border: "black solid 2px",
                   boxShadow: "0 0 10px rgba(0, 0, 0, 0.8)",
                 }}
@@ -91,6 +93,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
               flexDirection: "column",
               alignItems: "center",
               flexBasis: "25%",
+              justifyContent: "center",
             }}
           >
             <Typography variant="caption" color="text.secondary">
@@ -98,7 +101,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
             </Typography>
             <Typography
               variant="subtitle2"
-              sx={{ fontSize: "large", color: "black" }}
+              sx={{ fontSize: "medium", color: "black" }}
             >
               {comment.author}
             </Typography>
@@ -111,6 +114,7 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
           <Box
             sx={{
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
               flexBasis: "25%",
               justifyContent: "center",
@@ -119,7 +123,13 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
             <img
               src={like}
               alt="Like comment button"
-              style={{ width: 50, height: 50 }}
+              style={{
+                width: "11vw",
+                height: "11vw",
+                cursor: "pointer",
+                maxHeight: "80px",
+                maxWidth: "80px",
+              }}
             />
             <Typography
               variant="subtitle2"
@@ -131,32 +141,23 @@ export const CommentCards = ({ comment, users, handleDeleteComment }) => {
             >
               Likes: {comment.votes}
             </Typography>
-          </Box>
-
-          {/* Conditional delete button for logged in user */}
-          {loggedInUser && loggedInUser.username === comment.author && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexBasis: "25%",
-                justifyContent: "center",
-              }}
-            >
+            {loggedInUser && loggedInUser.username === comment.author && (
               <img
                 src={deleteImg}
                 alt="Delete comment button"
                 style={{
-                  width: 50,
-                  height: 50,
+                  width: "10vw",
+                  height: "10vw",
                   cursor: "pointer",
-                  border: "black solid 3px",
-                  borderRadius: "50%",
+                  maxHeight: "68px",
+                  maxWidth: "68px",
                 }}
                 onClick={() => handleDeleteComment(comment.comment_id)}
               />
-            </Box>
-          )}
+            )}
+          </Box>
+
+          {/* Conditional delete button for logged in user */}
         </Box>
       </CardContent>
     </Card>
